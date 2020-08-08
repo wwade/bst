@@ -5,13 +5,10 @@
  */
 
 #include <err.h>
-#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
-#include <sys/ioctl.h>
 #include <sys/prctl.h>
 #include <sys/ptrace.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 #include "sig.h"
