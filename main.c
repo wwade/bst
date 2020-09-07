@@ -50,6 +50,7 @@ enum {
 	OPTION_LIMIT_SIGPENDING,
 	OPTION_LIMIT_STACK,
 	_OPTION_LIMIT_END = OPTION_LIMIT_STACK,
+	OPTION_LIMIT_NO_COPY,
 	OPTION_SHARE_CGROUP,
 	OPTION_SHARE_IPC,
 	OPTION_SHARE_MNT,
@@ -222,16 +223,17 @@ int main(int argc, char *argv[], char *envp[])
 		{ "nic",                required_argument, NULL, OPTION_NIC             },
 
 		/* Opt-out feature flags */
-		{ "no-fake-devtmpfs",   no_argument, NULL, OPTION_NO_FAKE_DEVTMPFS      },
-		{ "no-derandomize",     no_argument, NULL, OPTION_NO_DERANDOMIZE        },
-		{ "no-proc-remount",    no_argument, NULL, OPTION_NO_PROC_REMOUNT       },
-		{ "no-loopback-setup",  no_argument, NULL, OPTION_NO_LOOPBACK_SETUP     },
-		{ "no-init",            no_argument, NULL, OPTION_NO_INIT               },
+		{ "no-copy-hard-limits", no_argument, NULL, OPTION_LIMIT_NO_COPY        },
+		{ "no-fake-devtmpfs",    no_argument, NULL, OPTION_NO_FAKE_DEVTMPFS     },
+		{ "no-derandomize",      no_argument, NULL, OPTION_NO_DERANDOMIZE       },
+		{ "no-proc-remount",     no_argument, NULL, OPTION_NO_PROC_REMOUNT      },
+		{ "no-loopback-setup",   no_argument, NULL, OPTION_NO_LOOPBACK_SETUP    },
+		{ "no-init",             no_argument, NULL, OPTION_NO_INIT              },
 
 		/* Deprecated flags */
 		{ "share",      required_argument, NULL, OPTION_SHARE_DEPRECATED        },
-		{ "mutable",    required_argument, NULL, OPTION_MUTABLE_DEPRECATED      },
-		
+                { "mutable", required_argument, NULL, OPTION_MUTABLE_DEPRECATED      },
+
 		{ 0, 0, 0, 0 }
 	};
 
@@ -342,6 +344,10 @@ int main(int argc, char *argv[], char *envp[])
 			case OPTION_LIMIT_SIGPENDING:
 			case OPTION_LIMIT_STACK:
 				handle_limit_arg(c, &opts, optarg);
+				break;
+
+			case OPTION_LIMIT_NO_COPY:
+				opts.no_copy_hard_limits = 1;
 				break;
 
 			case OPTION_SHARE_CGROUP:
